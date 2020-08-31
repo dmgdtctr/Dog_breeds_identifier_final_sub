@@ -29,14 +29,7 @@
 #           the item at index 4 of the list. Note we recommend setting the values
 #           at indices 3 & 4 to 1 when the label is of-a-dog and to 0 when the 
 #           label isn't a dog.
-#
-##
-# TODO 4: Define adjust_results4_isadog function below, specifically replace the None
-#       below by the function definition of the adjust_results4_isadog function. 
-#       Notice that this function doesn't return anything because the 
-#       results_dic dictionary that is passed into the function is a mutable 
-#       data type so no return is needed.
-# 
+
 import re
 def adjust_results4_isadog(results_dic, dogfile):
     """
@@ -77,25 +70,17 @@ def adjust_results4_isadog(results_dic, dogfile):
     
     
     
-    for key in results_dic: 
-        pet_label = results_dic[key][0]
-        model_label = results_dic[key][1].split(',')
-        #model_label = model_label[0].strip().lower()
+    for key, value in results_dic.items(): 
+        pet_label, model_label = value[0], value[1]
         pet_label_is_dog = False
         model_label_is_dog = False
-        if pet_label in dognames_dic:    #if string found is in current line then extend results_dic
-            pet_label_is_dog = True                
-        for n_model_label in model_label:
-            n_model_label = n_model_label.strip()
-            if n_model_label in dognames_dic:
-                model_label_is_dog = True
-        if pet_label_is_dog:
-            results_dic[key].extend([1])
+        if pet_label in dognames_dic:    
+            if model_label in dognames_dic:
+                value.extend([1, 1])        
+            else:
+                value.extend([1, 0])
         else:
-            results_dic[key].extend([0])                
-        if model_label_is_dog:
-            results_dic[key].extend([1])
-        else: 
-            results_dic[key].extend([0])
-                    
-
+            if model_label in dognames_dic:
+                value.extend([0, 1])        
+            else:
+                value.extend([0, 0])
